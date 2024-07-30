@@ -1,7 +1,5 @@
 EyePointer
 
-A Revolutionary Eye-Controlled Mouse Project
-
 Overview
 
 EyePointer is an open-source project that enables users to control their mouse cursor with their eyes. Using computer vision and machine learning techniques, EyePointer tracks eye movements and translates them into precise cursor movements, allowing users to interact with their computer in a hands-free and intuitive way.
@@ -28,10 +26,6 @@ Usage
 Contributing
 
 Contributions are welcome! Please submit issues, feature requests, and pull requests to help improve EyePointer.
-
-License
-
-EyePointer is licensed under the MIT License. See LICENSE for details.
 
 Acknowledgments
 
