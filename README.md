@@ -11,15 +11,6 @@ EyePointer is an open-source project that enables users to control their mouse c
 
 ## Getting Started
 
-### Prerequisites
-
-Before you begin, ensure you have met the following requirements:
-
-- Python 3.x
-- [OpenCV](https://opencv.org/)
-- [Mediapipe](https://mediapipe.dev/)
-- [PyAutoGUI](https://pyautogui.readthedocs.io/en/latest/)
-
 ### Installation
 
 1. **Install the required dependencies:**
