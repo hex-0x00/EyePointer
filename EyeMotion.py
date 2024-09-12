@@ -3,41 +3,43 @@ import mediapipe as mp
 import pyautogui
 import numpy as np
 
-cam = cv2.VideoCapture(0)
-face_mesh = mp.solutions.face_mesh.FaceMesh(refine_landmarks=True)
-screen_w, screen_h = pyautogui.size()
+CAMERA_INDEX = 0
+SCREEN_WIDTH, SCREEN_HEIGHT = pyautogui.size()
+CLICK_THRESHOLD = 0.01
 
-while True:
-    _, frame = cam.read()
+def process_frame(frame):
     frame = cv2.flip(frame, 1)
     rgb_frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+    return rgb_frame
+
+def detect_face_landmarks(rgb_frame):
     output = face_mesh.process(rgb_frame)
-    landmark_points = output.multi_face_landmarks
-    frame_h, frame_w, _ = frame.shape
+    return output.multi_face_landmarks
 
-    if landmark_points:
-        landmarks = landmark_points[0].landmark
-        for id, landmark in enumerate(landmarks[474:478]):
-            x = int(landmark.x * frame_w)
-            y = int(landmark.y * frame_h)
-            cv2.circle(frame, (x, y), 3, (0, 255, 0))
-            if id == 1:
-                screen_x = screen_w * landmark.x
-                screen_y = screen_h * landmark.y
-                pyautogui.moveTo(screen_x, screen_y)
+def move_mouse(landmarks):
+    screen_x = SCREEN_WIDTH * landmarks[1].x
+    screen_y = SCREEN_HEIGHT * landmarks[1].y
+    pyautogui.moveTo(screen_x, screen_y)
 
-        left = [landmarks[145], landmarks[159]]
-        left_distance = np.linalg.norm(np.array([left[0].x, left[0].y]) - np.array([left[1].x, left[1].y]))
+def detect_click(landmarks):
+    left_distance = np.linalg.norm(np.array([landmarks[145].x, landmarks[145].y]) - np.array([landmarks[159].x, landmarks[159].y]))
+    return left_distance < CLICK_THRESHOLD
 
-        for landmark in left:
-            x = int(landmark.x * frame_w)
-            y = int(landmark.y * frame_h)
-            cv2.circle(frame, (x, y), 3, (0, 255, 255))
+cam = cv2.VideoCapture(CAMERA_INDEX)
+face_mesh = mp.solutions.face_mesh.FaceMesh(refine_landmarks=True)
 
-        # Click detection threshold (adjust to your liking)
-        threshold = 0.01
+while True:
+    ret, frame = cam.read()
+    if not ret:
+        break
 
-        if left_distance < threshold:
+    rgb_frame = process_frame(frame)
+    face_landmarks = detect_face_landmarks(rgb_frame)
+
+    if face_landmarks:
+        landmarks = face_landmarks[0].landmark
+        move_mouse(landmarks)
+        if detect_click(landmarks):
             pyautogui.click()
             pyautogui.sleep(1)
 
