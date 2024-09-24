@@ -42,7 +42,7 @@ EyePointer is an open-source project that enables users to control their mouse c
 
 ## Usage
 
-1. **Look at the screen and move your eyes to control the cursor.**
+1. **Look at the scremove your eyes to control the cursor.**
 2. **Adjust the sensitivity and accuracy settings as needed.**
 3. **Press the `Esc` key to exit the application.**
 
